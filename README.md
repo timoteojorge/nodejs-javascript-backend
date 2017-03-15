@@ -12,3 +12,12 @@
     - `npm install express-load --save`
 - Instalar body-parser
     - `npm install body-parser --save`
+- Instalar express-validator (validação de campos)
+    - `npm install express-validator --save-dev` (dependencia apenas de dev)
+- Instalar mocha (testes em node.js)
+    - `npm install mocha --save-dev` (dependencia apenas de dev)
+    - Criar uma pasta test na raiz da aplicação (o mocha procura por essa pasta)
+    - Criar os arquivos de testes dentro da pasta
+    - Invocar o aquivo node_modules/mocha/bin/mocha para executar os testes
+- Instalar a biblioteca supertest
+    - `npm install supertest --save-dev`

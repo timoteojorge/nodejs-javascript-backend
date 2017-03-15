@@ -1,7 +1,7 @@
 var express = require('express');
 var load = require('express-load');
 var bodyParser = require('body-parser');
-
+var expressValidator = require('express-validator');
 
 
 module.exports = function(){
@@ -20,6 +20,10 @@ module.exports = function(){
 	// o body-parser irá esperar uma requisição no formato urlencoded e irá transformar em um objeto json	
 	// extended é um parametro que informa para o body-parser tentar transformar objetos json complexos (objetos dentro de objetos)
 	app.use(bodyParser.urlencoded({extended:true}));
+	//permite que a aplicação receba json no request
+	app.use(bodyParser.json());
+	//permite validar campos (required, empty, etc)
+	app.use(expressValidator());
 
 	//express-load carrega as rotas automaticamente (passando a pasta 'routes' para ele)
 	load('routes',{cwd:'app'})
