@@ -1,26 +1,37 @@
-var http = require('http');
-var assert = require('assert'); //biblioteca do mocha
+var express = require('../config/express')();
+//Passamos o express como parametro e o Supertest se integra com o express
+// Dessa forma não precisamos subir o servidor nem passar o endereço completo para o teste
+//passamos apenas a rota e o supertest resolve usando o express
+var request = require('supertest')(express);
 describe('#ProdutosController', function(){
-    it('#listagem json', function(done){
-        var configuracoes = {
-            hostname:'localhost',
-            port: 3000,
-            path: '/produtos',
-            //Content Negotiation :Cliente informa o que deseja receber
-            // comuns: text/html, application/json
-            headers: {
-                'Accept': 'application/json'
-            }
-        };
 
-        http.get(configuracoes, function(res){
-            assert.equal(res.statusCode,200);
-            assert.equal(res.headers['content-type'],'application/json; charset=utf-8');
+    beforeEach(function(done){
+        //Pesquisar pela biblioteca node-database-cleaner (evita deletes na mão como abaixo)
+        var conn = express.infra.connectionFactory();
+        conn.query('delete from produtos;', function(ex, result){
             
-            // é necessário informar ao mocha qdo a função de finalização deve ser invocada
-            // Se uma função não for passada o mocha vai terminar a execução do teste sem esperar pelos recursos assincronos do http
-            done();
+            if(!ex){
+                done();
+            }
         });
-        console.log("Teste de verificação de listagem json");
+    });
+
+    it('#listagem json', function(done){
+        request.get('/produtos')
+        .set('Accept','application/json')
+        .expect('Content-type',/json/) 
+        .expect(200,done);
+    });
+
+    it('#Cadastro de novo produto com dados inválidos', function(done){
+        request.post('/produtos')
+        .send({titulo:'',descricao:'novo livro'})
+        .expect(400,done);
+    });
+
+    it('#Cadastro de novo produto com dados válidos', function(done){
+        request.post('/produtos')
+        .send({titulo:'Titulo',descricao:'novo livro',preco:20.50})
+        .expect(302,done);
     });
 });

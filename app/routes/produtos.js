@@ -2,7 +2,7 @@
 
 
 module.exports = function(app){
-	var listaProdutos = function(req,res){
+	var listaProdutos = function(req,res,next){
 		
 		var connection = app.infra.connectionFactory();
 
@@ -11,6 +11,12 @@ module.exports = function(app){
 		var produtosDAO = new app.infra.ProdutosDAO(connection);
 
 		produtosDAO.lista(function(err, result){
+
+			if(err){
+				//Diz para o express tratar o erro
+				return next(err);
+			}
+
 			// Content Negotiation :Cliente informa o que deseja receber
     		// comuns: text/html, application/json
 			// Manda cada resposta de acordo com o que o cliente solicitou
