@@ -21,3 +21,5 @@
     - Invocar o aquivo node_modules/mocha/bin/mocha para executar os testes
 - Instalar a biblioteca supertest
     - `npm install supertest --save-dev`
+- Instalar o socket.io para fazer comunicação do servidor com o cliente
+    - `npm install socket.io --save`
