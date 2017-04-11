@@ -1,4 +1,4 @@
-***Tutorial de configuração do projeto
+# Tutorial de configuração do projeto
 
 - Instalar node
 - `npm init`
